@@ -1,0 +1,39 @@
+group 'kotlinx.coroutine'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.1.50'
+    repositories {
+        mavenCentral()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+    maven { url "http://dl.bintray.com/cy6ergn0m/maven" }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'org.jetbrains.kotlinx:vertx3-lang-kotlin:0.0.+'
+    compile 'io.github.microutils:kotlin-logging:1.4'
+    compile 'org.slf4j:slf4j-jdk14:1.7.21'
+}
+
+apply plugin: 'application'
+mainClassName = 'io.xhub.confIOMessenger.Main'
+applicationDefaultJvmArgs = ['-Dvertx.disableDnsResolver=true']
+
+run {
+    args '-conf', 'conf/dev.json'
+}
+
+apply plugin: 'distribution'
