@@ -1,3 +1,5 @@
+@file:JvmName("Main")
+
 package io.xhub.confIOMessenger
 
 import io.vertx.core.Launcher
