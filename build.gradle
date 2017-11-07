@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext.kotlin_version = '1.1.50'
     ext.vertx_web_version = '3.5.0'
+    ext.konfig_version = '1.6.1.0'
     repositories {
         mavenCentral()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
@@ -24,19 +25,17 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'org.jetbrains.kotlinx:vertx3-lang-kotlin:0.0.+'
-    compile 'io.github.microutils:kotlin-logging:1.4'
-    compile 'org.slf4j:slf4j-jdk14:1.7.21'
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlinx:vertx3-lang-kotlin:0.0.+"
+    compile "io.github.microutils:kotlin-logging:1.4"
+    compile "org.slf4j:slf4j-jdk14:1.7.21"
     compile "io.vertx:vertx-web:$vertx_web_version"
+    compile "com.natpryce:konfig:$konfig_version"
 }
 
 apply plugin: 'application'
 mainClassName = 'io.xhub.confIOMessenger.Main'
 applicationDefaultJvmArgs = ['-Dvertx.disableDnsResolver=true']
-
-run {
-    args '-conf', 'conf/dev.json'
-}
 
 jar {
     manifest {

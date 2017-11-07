@@ -2,6 +2,9 @@ package io.xhub.confIOMessenger
 
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpServer
+import io.xhub.confIOMessenger.config.*
+import io.xhub.confIOMessenger.config.server.host
+import io.xhub.confIOMessenger.config.server.port
 
 class RootVerticle: AbstractVerticle() {
     var server: HttpServer? = null
@@ -13,7 +16,7 @@ class RootVerticle: AbstractVerticle() {
             response.end("Hello world!")
         })
 
-        server?.listen(8080)
+        server?.listen(config[port], config[host])
 
     }
 
