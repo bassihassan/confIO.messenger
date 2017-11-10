@@ -14,7 +14,7 @@ class WebhookHandler: Handler<RoutingContext> {
         if(hubVerifyToken == config[verifyToken]) {
             response.end(hubChallenge)
         } else {
-            response.end("Not Valid Token")
+            response.end("Not Valid Token !")
         }
 
     }

@@ -1,36 +1,31 @@
 package io.xhub.confIOMessenger.services
 
-import io.vertx.core.AbstractVerticle
+import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
-import io.vertx.core.http.HttpClientResponse
-import io.vertx.core.json.Json
-import io.xhub.confIOMessenger.domain.Message
-import io.xhub.confIOMessenger.config.*
-import io.xhub.confIOMessenger.domain.SentMessage
-import org.slf4j.Logger
+import io.vertx.core.http.HttpClientOptions
+import io.xhub.confIOMessenger.config.config
+import io.xhub.confIOMessenger.config.pageAccessToken
 import org.slf4j.LoggerFactory
 
-class MessageSender(val message: Message<SentMessage>) :AbstractVerticle() {
-    val logger: Logger = LoggerFactory.getLogger(MessageSender::class.java)
-    override fun start() {
-        val messageString = Json.encode(message)
-        val client = vertx.createHttpClient()
+object MessageSender {
+    val tokenAcces = config[pageAccessToken]
+    val logger = LoggerFactory.getLogger(MessageSender::class.java)
+    fun send(vertx:Vertx,message:String){
+        logger.error(message)
+               val client = vertx.createHttpClient(HttpClientOptions().setSsl(true).setLogActivity(true))
         val buffer: Buffer = Buffer.buffer()
-        client.post(config[graphSendMessageURI].format(config[pageAccessToken]))
-                .write(messageString)
-                .handler { event: HttpClientResponse? ->
-                    event?.bodyHandler{ b: Buffer? ->
-                        buffer.appendBuffer(b)
-                    }
-                }
-                .endHandler {
-                    logger.debug(buffer.toString())
-                }
+       val request = client!!.post(443, "graph.facebook.com"
+               , "/v2.6/me/messages?access_token=$tokenAcces",
+                { response ->
+
+                    println("message sent ${response.statusCode()}")
+                })
+        val buf =Buffer.buffer().apply {
+            appendString(message)
+        }
+        request.putHeader("content-type", "application/json")
+        request.putHeader("content-length", buf.length().toString())
+        request.write(buf);
+        request.end()
     }
-
-
-
-    override fun stop() {
-    }
-
 }
