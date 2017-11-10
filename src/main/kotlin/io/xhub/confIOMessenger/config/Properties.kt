@@ -8,6 +8,8 @@ import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
 val port by intType
 val host by stringType
 val verifyToken by stringType
+val pageAccessToken by stringType
+val graphSendMessageURI by stringType
 
 val config = systemProperties() overriding
         EnvironmentVariables() overriding
