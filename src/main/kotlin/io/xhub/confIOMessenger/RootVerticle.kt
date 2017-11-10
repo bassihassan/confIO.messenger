@@ -2,24 +2,19 @@ package io.xhub.confIOMessenger
 
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpServer
+import io.vertx.ext.web.Router
 import io.xhub.confIOMessenger.config.*
+import io.xhub.confIOMessenger.routes.WebhookHandler
 
 class RootVerticle: AbstractVerticle() {
     var server: HttpServer? = null
+    val webhookHandler = WebhookHandler()
 
     override fun start() {
         server = vertx.createHttpServer()
-        server?.requestHandler{ request ->
-            val response = request.response()
-            val hubVerifyToken = request.getParam("hub.verify_token")
-            val hubChallenge = request.getParam("hub.challenge")
-            if(hubVerifyToken == config[verifyToken]) {
-                response.end(hubChallenge)
-            } else {
-                response.end("Not Valid Token")
-            }
-        }
-
+        val router = Router.router(vertx)
+        router.get().handler(webhookHandler)
+        server?.requestHandler { router.accept(it) }
         server?.listen(config[port], config[host])
 
     }
