@@ -3,18 +3,22 @@ package io.xhub.confIOMessenger
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpServer
 import io.xhub.confIOMessenger.config.*
-import io.xhub.confIOMessenger.config.host
-import io.xhub.confIOMessenger.config.port
 
 class RootVerticle: AbstractVerticle() {
     var server: HttpServer? = null
 
     override fun start() {
         server = vertx.createHttpServer()
-        server?.requestHandler({ request ->
+        server?.requestHandler{ request ->
             val response = request.response()
-            response.end("Hello world!")
-        })
+            val hubVerifyToken = request.getParam("hub.verify_token")
+            val hubChallenge = request.getParam("hub.challenge")
+            if(hubVerifyToken == config[verifyToken]) {
+                response.end(hubChallenge)
+            } else {
+                response.end("Not Valid Token")
+            }
+        }
 
         server?.listen(config[port], config[host])
 
