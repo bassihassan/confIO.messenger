@@ -1,9 +1,11 @@
 package io.xhub.confIOMessenger.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Message<T extends AbstractMessageBody> implements Serializable {
     @JsonProperty("messaging_type")
     private String messagingType;
