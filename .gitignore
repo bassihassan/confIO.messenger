@@ -10,3 +10,4 @@ out
 hs_err_pid*
 
 # configs
+src/main/resources
