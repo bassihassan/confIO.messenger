@@ -5,6 +5,9 @@ import io.vertx.core.eventbus.EventBus
 import io.vertx.core.json.Json
 import io.xhub.confIOMessenger.config.*
 import io.xhub.confIOMessenger.domain.*
+import io.xhub.confIOMessenger.domain.modele.Button
+import io.xhub.confIOMessenger.domain.modele.Element
+import io.xhub.confIOMessenger.domain.modele.Template
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -27,28 +30,41 @@ class MessageHandler : AbstractVerticle() {
                     // if message not null
                     message?.let {
                         message.message?.quick_reply?.let {
-                                logger.error("----quickReply---")
-                                logger.error(message.toString())
-                    //else
+                            logger.error("----quickReply---")
+                            logger.error(message.toString())
+                            //else
                         } ?: run {
                             logger.error("----- message ---")
                             logger.error(message.toString())
                             //Exemple Send QuickReply
-//                            val responsemsg = SentRequest(message.sender,
-//                                    Message.SentMessage("Get Started",
-//                                            quick_replies =  listOf<QuickReply>(
-//                                                    QuickReply("Venue","Venue"),
-//                                                    QuickReply("FAQ","FAQ"),
-//                                                    QuickReply("SCHEDULE","SCHEDULE"),
-//                                                    QuickReply("SPEAKERS","SPEAKERS")
-//                                            )))
+                            val responsemsg = SentRequest(message.sender,
+                                    Message.SentMessage("Get Started",
+                                            quick_replies =  listOf<QuickReply>(
+                                                    QuickReply("Venue","Venue"),
+                                                    QuickReply("FAQ","FAQ"),
+                                                    QuickReply("SCHEDULE","SCHEDULE"),
+                                                    QuickReply("SPEAKERS","SPEAKERS")
+                                            )))
+
+
                             // Exemple Send Attachement
-                            val responsemsg = SentRequest(message.sender,Message.SentMessage(
-                                    attachment = Attachement("image",
-                                            mapOf(Pair("url","https://segunfamisa.com/img/kotlin-logo.png"),
-                                                    Pair("is_reusable",true)
-                                            )
-                            )))
+//                            val responsemsg = SentRequest(message.sender, Message.SentMessage(
+//                                    attachment = Attachement(AttachementType.template.toString(),
+//                                            Template.Generic(
+//                                                    elements = listOf(
+//                                                            Element(
+//                                                                    title = "hey",
+//                                                                    subtitle = "coool",
+//                                                                    buttons = listOf(
+//                                                                            Button.PostBack(
+//                                                                                    title = "Hey",
+//                                                                                    payload = "Hey"
+//                                                                    )
+//                                                            )
+//                                                    )
+//                                            )
+//                                            )
+//                                    )))
                             MessageSender.send(vertx, Json.encode(responsemsg))
                         }
                     }

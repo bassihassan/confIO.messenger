@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.node.BooleanNode
 import io.vertx.core.json.JsonObject
+import io.xhub.confIOMessenger.annotation.IgnoreNotNullUnknown
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@IgnoreNotNullUnknown
 sealed class Message(
         @JsonProperty()
         open val text:String?=null,
         @JsonProperty("is_echo")
         val is_echo:Boolean?= null
 ){
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @IgnoreNotNullUnknown
     data  class ReceivedMessage(
             @JsonProperty("text")
             override var  text:String?=null,
@@ -22,7 +23,7 @@ sealed class Message(
             @JsonProperty("quick_reply")
             val quick_reply:QuickReply?=null
     ) :Message(text)
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @IgnoreNotNullUnknown
     data class SentMessage(
             @JsonProperty("text")
             override var text:String?=null,

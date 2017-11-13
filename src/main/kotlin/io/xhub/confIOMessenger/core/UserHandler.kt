@@ -1,4 +1,5 @@
 package io.xhub.confIOMessenger.core
 
-class UserHandler {
+object UserHandler {
+    val users = hashMapOf<String,Any>()
 }
